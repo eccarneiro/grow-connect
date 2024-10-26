@@ -24,5 +24,3 @@ services:
 networks:
   vpsgrow: ## Nome da rede interna
     external: true
-    attachable: true
-    name: vpsgrow ## Nome da rede interna
