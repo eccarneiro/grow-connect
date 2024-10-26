@@ -8,5 +8,21 @@ services:
       - .:/app
     environment:
       - SHEETS_API=$SHEETS_API
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.portainer.rule=Host(`grow-connect.growonit.online`)" ## Dominio da aplicação https://grow-connect.growonit.online/localizacao?cidade=Acre&estado=AC
+        - "traefik.http.services.portainer.loadbalancer.server.port=3000"
+        - "traefik.http.routers.portainer.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.portainer.service=portainer"
+        - "traefik.docker.network=vpsgrow" ## Nome da rede interna
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.portainer.priority=1"
+    networks:
+        - vpsgrow ## Nome da rede interna
+networks:
+  vpsgrow: ## Nome da rede interna
+    external: true
+    attachable: true
+    name: vpsgrow ## Nome da rede interna
