@@ -51,12 +51,23 @@ app.get('/localizacao', async (req, res) => {
         .sort((a, b) => a.distance - b.distance)
         .slice(0, 2);
 
+
+      const filiaisProximasComTitulo = {};
+      filiaisProximas.forEach((filial, index) => {
+        filiaisProximasComTitulo[`filiaisProximas${index + 1}`] = filial;
+      });
+
       res.json({
-        cidade,
-        estado,
-        latitude,
-        longitude,
-        filiaisProximas,
+        statusCode: 200,
+        data: {
+          origemCliente: {
+            cidade,
+            estado,
+            latitude,
+            longitude,
+            ...filiaisProximasComTitulo,
+          }
+        }
       });
     } else {
       res.status(400).json({ error: 'Localização não encontrada.' });
